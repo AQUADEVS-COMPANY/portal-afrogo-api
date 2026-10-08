@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>AfroGo</title>
+<style>
+  body { margin: 0; padding: 0; background: #0B0620; font-family: Arial, Helvetica, sans-serif; }
+  .header { background: #5B0FD6; background-image: linear-gradient(135deg, #5B0FD6, #8B5CF6); border-radius: 20px 20px 0 0; padding: 32px 24px; text-align: center; }
+  .logo { margin: 0; font-size: 34px; font-weight: 800; color: #FFFFFF; letter-spacing: 1px; }
+  .slogan { margin: 6px 0 0; font-size: 14px; color: #E9DDFF; }
+  .content { background: #140B33; padding: 32px 28px; }
+  .badge { display: inline-block; padding: 6px 14px; border-radius: 999px; background: #5B0FD6; color: #FFFFFF; font-size: 13px; font-weight: bold; margin: 0 0 16px; }
+  h1 { margin: 0 0 16px; font-size: 22px; color: #FFFFFF; }
+  p { margin: 0 0 14px; font-size: 16px; line-height: 1.6; color: #D9CFF5; }
+  .reason { background: #0B0620; border-left: 4px solid #8B5CF6; border-radius: 8px; padding: 12px 16px; color: #FFFFFF; }
+  .footer { background: #0B0620; border-radius: 0 0 20px 20px; padding: 20px 24px; text-align: center; font-size: 12px; line-height: 1.5; color: #B8A9E0; }
+  @media only screen and (max-width: 620px) {
+    .content { padding: 24px 18px !important; }
+    h1 { font-size: 20px !important; }
+    .logo { font-size: 28px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#0B0620;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0B0620;">
+  <tr>
+    <td align="center" style="padding:24px 12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
+        <tr><td class="header">
+          <p class="logo">AfroGo</p>
+          <p class="slogan">Tu viaje, Nuestra cultura</p>
+        </td></tr>
+        <tr><td class="content">
+          <p class="badge">Solicitud rechazada</p>
+          <h1>Hola, {{firstName}}</h1>
+          <p>Tu solicitud fue rechazada porque no cumple los requisitos.</p>
+          <!--REASON_START--><p class="reason"><strong>Motivo:</strong> {{reason}}</p><!--REASON_END-->
+          <p>Te invitamos a volver a postular cuando cumplas con los requisitos. ¡Te esperamos!</p>
+        </td></tr>
+        <tr><td class="footer">
+          AfroGo &middot; Chincha, Ica, Perú<br>
+          Este es un mensaje automático, por favor no respondas a este correo.
+        </td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
