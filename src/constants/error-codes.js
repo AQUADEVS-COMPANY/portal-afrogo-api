@@ -10,6 +10,8 @@ const SP_ERRORS = Object.freeze({
   INVALID_DOCUMENT: { status: 400, message: 'El tipo de documento no es válido' },
   DRIVER_NOT_FOUND: { status: 404, message: 'Conductor no encontrado' },
   NOT_PENDING: { status: 409, message: 'La solicitud ya fue procesada' },
+  FORBIDDEN: { status: 403, message: 'No tienes permisos para realizar esta acción' },
+  INVALID_ROLE: { status: 400, message: 'El rol no es válido', field: 'role' },
 });
 
 /**

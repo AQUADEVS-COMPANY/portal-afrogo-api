@@ -3,6 +3,8 @@ export class DriverLog {
   constructor(props) {
     this.id = props.id;
     this.driverId = props.driverId;
+    this.userId = props.userId;
+    this.userName = props.userName;
     this.fullName = props.fullName;
     this.email = props.email;
     this.statusId = props.statusId;
@@ -17,6 +19,8 @@ export class DriverLog {
     return new DriverLog({
       id: row.id,
       driverId: row.driver_id,
+      userId: row.user_id,
+      userName: row.user_name,
       fullName: row.full_name,
       email: row.email,
       statusId: row.status_id,

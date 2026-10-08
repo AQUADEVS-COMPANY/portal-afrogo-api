@@ -20,3 +20,9 @@ export const registerLimiter = build(
   { windowMs: 60 * 60 * 1000, limit: 5 },
   'Has superado el límite de solicitudes. Inténtalo nuevamente en una hora.',
 );
+
+/** Login limit: 5 failed attempts per 15 minutes per IP (successful logins are not counted). */
+export const loginLimiter = build(
+  { windowMs: 15 * 60 * 1000, limit: 5, skipSuccessfulRequests: true },
+  'Demasiados intentos de inicio de sesión. Inténtalo nuevamente en 15 minutos.',
+);

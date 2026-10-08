@@ -1,9 +1,12 @@
 import 'dotenv/config';
 
-const REQUIRED = ['DB_HOST', 'DB_USER', 'DB_NAME', 'INTERNAL_API_KEY'];
+const REQUIRED = ['DB_HOST', 'DB_USER', 'DB_NAME', 'JWT_SECRET'];
 const missing = REQUIRED.filter((key) => !process.env[key]);
 if (missing.length > 0) {
   throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+}
+if (process.env.JWT_SECRET.length < 32) {
+  throw new Error('JWT_SECRET must be at least 32 characters long');
 }
 
 /** Parses TRUST_PROXY: "true"/"false", a number of hops, or a subnet string. */
@@ -30,7 +33,10 @@ export const env = Object.freeze({
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean),
-  internalApiKey: process.env.INTERNAL_API_KEY,
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || '5h',
+  },
   smtp: {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: Number(process.env.SMTP_PORT) || 465,

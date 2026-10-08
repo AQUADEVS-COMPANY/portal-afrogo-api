@@ -3,18 +3,7 @@ import { DOCUMENTS } from '../constants/documents.js';
 import { VehicleType } from '../models/entities/vehicle-type.entity.js';
 import { Driver } from '../models/entities/driver.entity.js';
 import { DriverLog } from '../models/entities/driver-log.entity.js';
-
-/**
- * mysql2 returns CALL results as [rows, ResultSetHeader]; the first result set is rows.
- * Procedures without SELECT return a bare ResultSetHeader.
- */
-const firstResultSet = (result) => (Array.isArray(result) && Array.isArray(result[0]) ? result[0] : []);
-
-/** Runs a CALL with a prepared statement (binary protocol, so PDFs are not hex-escaped). */
-async function call(executor, sql, params = []) {
-  const [result] = await executor.execute(sql, params);
-  return firstResultSet(result);
-}
+import { call } from './sp-call.js';
 
 /** Runs work inside a single connection transaction. */
 async function withTransaction(work) {
@@ -81,15 +70,15 @@ export const driverRepository = {
     return rows.length > 0 ? rows[0].file_data ?? null : null;
   },
 
-  /** @returns {Promise<{firstName: string, lastName: string, email: string}>} */
-  async approveDriver(driverId) {
-    const rows = await call(pool, 'CALL sp_driver_approve(?)', [driverId]);
+  /** @param {string} driverId @param {string} userId administrator performing the action */
+  async approveDriver(driverId, userId) {
+    const rows = await call(pool, 'CALL sp_driver_approve(?, ?)', [driverId, userId]);
     return toContact(rows[0]);
   },
 
-  /** @returns {Promise<{firstName: string, lastName: string, email: string}>} */
-  async rejectDriver(driverId, reason) {
-    const rows = await call(pool, 'CALL sp_driver_reject(?, ?)', [driverId, reason ?? null]);
+  /** @param {string} driverId @param {string} [reason] @param {string} userId administrator performing the action */
+  async rejectDriver(driverId, reason, userId) {
+    const rows = await call(pool, 'CALL sp_driver_reject(?, ?, ?)', [driverId, reason ?? null, userId]);
     return toContact(rows[0]);
   },
 

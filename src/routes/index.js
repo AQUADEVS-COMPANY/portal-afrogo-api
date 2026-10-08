@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { pingDatabase } from '../config/database.js';
-import { apiKey } from '../middlewares/api-key.js';
 import { ApiResponse } from '../models/dto/response/api.response.js';
 import driverRoutes from './driver.routes.js';
-import internalRoutes from './internal.routes.js';
+import authRoutes from './auth.routes.js';
+import adminRoutes from './admin.routes.js';
 
 const router = Router();
 
@@ -17,6 +17,7 @@ router.get('/health', async (req, res) => {
 });
 
 router.use(driverRoutes);
-router.use('/internal', apiKey, internalRoutes);
+router.use('/auth', authRoutes);
+router.use('/admin', adminRoutes);
 
 export default router;

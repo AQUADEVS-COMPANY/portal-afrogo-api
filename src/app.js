@@ -16,7 +16,7 @@ export function createApp() {
     cors({
       origin: (origin, callback) => callback(null, !origin || env.allowedOrigins.includes(origin)),
       methods: ['GET', 'POST'],
-      allowedHeaders: ['Content-Type', 'x-api-key'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'x-timezone'],
     }),
   );
   app.use(express.json({ limit: '10kb' }));

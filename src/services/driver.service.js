@@ -24,16 +24,20 @@ export const driverService = {
     return RegisterDriverResponse.fromDriverId(driverId);
   },
 
-  /** @param {import('../models/dto/request/list-drivers-query.request.js').ListDriversQueryRequest} query */
-  async listDrivers(query) {
+  /**
+   * @param {import('../models/dto/request/list-drivers-query.request.js').ListDriversQueryRequest} query
+   * @param {string} [timeZone] IANA time zone used to convert dates.
+   */
+  async listDrivers(query, timeZone) {
     const drivers = await driverRepository.listDrivers(query.status);
-    return drivers.map(DriverListItemResponse.fromEntity);
+    return drivers.map((driver) => DriverListItemResponse.fromEntity(driver, timeZone));
   },
 
-  async getDriver(driverId) {
+  /** @param {string} driverId @param {string} [timeZone] */
+  async getDriver(driverId, timeZone) {
     const driver = await driverRepository.getDriver(driverId);
     if (!driver) throw new AppError(404, 'Conductor no encontrado');
-    return DriverDetailResponse.fromEntity(driver);
+    return DriverDetailResponse.fromEntity(driver, timeZone);
   },
 
   /** @returns {Promise<Buffer>} */
@@ -43,20 +47,27 @@ export const driverService = {
     return file;
   },
 
-  async approveDriver(driverId) {
-    const contact = await driverRepository.approveDriver(driverId);
+  /** @param {string} driverId @param {string} userId administrator performing the action */
+  async approveDriver(driverId, userId) {
+    const contact = await driverRepository.approveDriver(driverId, userId);
     void emailService.sendApproved(contact);
   },
 
-  /** @param {import('../models/dto/request/reject-driver.request.js').RejectDriverRequest} request */
-  async rejectDriver(driverId, request) {
-    const contact = await driverRepository.rejectDriver(driverId, request.reason);
+  /**
+   * @param {import('../models/dto/request/reject-driver.request.js').RejectDriverRequest} request
+   * @param {string} userId administrator performing the action
+   */
+  async rejectDriver(driverId, request, userId) {
+    const contact = await driverRepository.rejectDriver(driverId, request.reason, userId);
     void emailService.sendRejected({ ...contact, reason: request.reason });
   },
 
-  /** @param {import('../models/dto/request/driver-log-query.request.js').DriverLogQueryRequest} query */
-  async listLogs(query) {
+  /**
+   * @param {import('../models/dto/request/driver-log-query.request.js').DriverLogQueryRequest} query
+   * @param {string} [timeZone]
+   */
+  async listLogs(query, timeZone) {
     const logs = await driverRepository.listLogs(query.driverId, query.email);
-    return logs.map(DriverLogResponse.fromEntity);
+    return logs.map((log) => DriverLogResponse.fromEntity(log, timeZone));
   },
 };
